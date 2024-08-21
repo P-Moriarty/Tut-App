@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { ResizeMode, Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
 import {
@@ -10,6 +10,7 @@ import {
   ViewStyle,
   ImageStyle,
   FlatListProps,
+  View,
 } from "react-native";
 
 import icons from "@/constants/icons";
@@ -25,31 +26,37 @@ interface TrendingProps {
 }
 
 // Define animations
-const zoomIn = {
-  0: {
-    scale: 0.9,
-  },
-  1: {
-    scale: 1,
-  },
-};
+const zoomIn = Animatable.createAnimation(
+  {
+    0: {
+      transform: [{ scale: 0.9 }],
+    },
+    1: {
+      transform: [{ scale: 1 }],
+    },
+  }
+) ;
 
-const zoomOut = {
-  0: {
-    scale: 1,
-  },
-  1: {
-    scale: 0.9,
-  },
-};
+const zoomOut = Animatable.createAnimation(
+  {
+    0: {
+      transform: [{ scale: 1 }],
+    },
+    1: {
+      transform: [{ scale: 0.9 }],
+    },
+  }
+) ;
 
 const TrendingItem: React.FC<TrendingItemProps> = ({ activeItem, item }) => {
+  const animatableRef = useRef<Animatable.View & View>(null);
   const [play, setPlay] = useState(false);
 
   return (
     <Animatable.View
-      style={styles.trendingItemContainer}
       animation={activeItem === item.$id ? zoomIn : zoomOut}
+      style={styles.trendingItemContainer}
+      ref={animatableRef}
       duration={500}
     >
       {play ? (
