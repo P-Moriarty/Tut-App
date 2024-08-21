@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"name": "Tut-app",
+		"path": "../.."
+	},
+	{
+		"name": "components",
+		"path": "../../../../Downloads/aora-main/aora-main/components"
+	}
+],
+  "settings": {}
+}

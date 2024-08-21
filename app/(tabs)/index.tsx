@@ -1,70 +1,87 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import { StyleSheet, Text, View, Image } from 'react-native';
+import React from 'react';
+import { SafeAreaView } from '@gluestack-ui/themed';
+import { SearchInput, Trending } from '@/components/index';
+import images from '@/constants/images';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
 
-export default function HomeScreen() {
+const index = () => {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({ ios: 'cmd + d', android: 'cmd + m' })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    <SafeAreaView style={styles.container}>
+      <View>
+        <View style={styles.header}>
+          <View>
+            <Text style={styles.welcomeText}>Welcome Back</Text>
+            <Text style={styles.nameText}>Manuel</Text>
+          </View>
+
+          <View style={styles.logoContainer}>
+            <Image
+              source={images.logoSmall}
+              style={styles.logo}
+              resizeMode='contain'
+            />
+          </View>
+
+        </View>
+
+        <SearchInput initialQuery={undefined} />
+
+        <View style={styles.content}>
+          <Text style={styles.latestVideosText}>
+            Latest Videos
+          </Text>
+
+          {/* <Trending posts={[]} /> */}
+        </View>
+
+      </View>
+    </SafeAreaView>
+
+  )
 }
 
+export default index
+
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: "#161622",
+    padding: 16,
+  },
+  header: {
     flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginBottom: 24, // mb-6
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  welcomeText: {
+    fontFamily: 'Poppins-Medium', // assuming font-pmedium refers to Poppins-Medium
+    fontSize: 14, // text-sm
+    color: '#D1D5DB', // text-gray-100
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  nameText: {
+    fontSize: 24, // text-2xl
+    fontFamily: 'Poppins-SemiBold', // assuming font-psemibold refers to Poppins-SemiBold
+    color: '#FFFFFF', // text-white
   },
-});
+  logoContainer: {
+    marginTop: 6, // mt-1.5
+  },
+  logo: {
+    width: 36, // w-9
+    height: 40, // h-10
+  },
+  content: {
+    width: '100%',
+    flex: 1,
+    paddingTop: 20, // pt-5
+    paddingBottom: 32, // pb-8
+  },
+  latestVideosText: {
+    fontSize: 18, // text-lg
+    fontFamily: 'Poppins-Regular', // assuming font-pregular refers to Poppins-Regular
+    color: '#D1D5DB', // text-gray-100
+    marginBottom: 12, // mb-3
+  },
+})

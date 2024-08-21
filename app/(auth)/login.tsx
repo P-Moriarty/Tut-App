@@ -1,9 +1,12 @@
 import { SafeAreaView, StyleSheet, Text, View, TextInput, TouchableOpacity, StatusBar, Image } from 'react-native'
 import React from 'react'
+import { useState } from 'react';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { useForm, Controller } from 'react-hook-form';
 import images from '@/constants/images';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
+import { Input, InputSlot } from '@gluestack-ui/themed';
+import { Feather, AntDesign } from '@expo/vector-icons';
 
 
 interface FormData {
@@ -13,12 +16,14 @@ interface FormData {
 
 
 const Login: React.FC = () => {
-
+    const [showPassword, setShowPassword] = useState(false);
     const { control, handleSubmit, formState: { errors } } = useForm<FormData>();
-
+    const handleState = () => {
+        setShowPassword(!showPassword);
+    };
     const onSubmit = (data: FormData) => {
         console.log(data);
-        // Handle login logic here
+        router.replace("/explore")
     };
     return (
         <SafeAreaView style={styles.container}>
@@ -70,14 +75,24 @@ const Login: React.FC = () => {
                             control={control}
                             rules={{ required: 'Password is required' }}
                             render={({ field: { onChange, onBlur, value } }) => (
-                                <TextInput
-                                    style={[styles.input, errors.password && styles.inputError]}
-                                    onBlur={onBlur}
-                                    onChangeText={onChange}
-                                    value={value}
-                                    secureTextEntry
-                                    autoCapitalize="none"
-                                />
+                                <Input style={[styles.input, errors.password && styles.inputError]}>
+                                    <InputSlot pr="$5" onPress={handleState}>
+                                        {showPassword ? (
+                                            <AntDesign name="eyeo" size={24} color="#CDCDE0" />
+                                        ) : (
+                                            <Feather name="eye-off" size={24} color="#CDCDE0" />
+                                        )}
+                                    </InputSlot>
+                                    <TextInput
+                                        secureTextEntry={!showPassword}
+                                        onBlur={onBlur}
+                                        onChangeText={onChange}
+                                        value={value}
+                                        autoCapitalize="none"
+                                        style={{ width: "100%" }}
+                                    />
+                                </Input>
+
                             )}
                             name="password"
                             defaultValue=""
@@ -94,7 +109,7 @@ const Login: React.FC = () => {
                             Don't have an account?
                         </Text>
                         <Link
-                            href="/sign-up"
+                            href="/signup"
                             style={{ fontSize: "16", fontWeight: "semibold", color: "#FF9C01" }}
                         >
                             Signup
@@ -141,6 +156,8 @@ const styles = StyleSheet.create({
         marginBottom: 4,
     },
     input: {
+        width: "100%",
+        color: "#CDCDE0",
         height: 55,
         borderColor: '#232533',
         borderWidth: 2,
