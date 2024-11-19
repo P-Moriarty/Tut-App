@@ -1,14 +1,40 @@
 import { StyleSheet, Text, View, Image } from 'react-native';
-import React from 'react';
-import { SafeAreaView } from '@gluestack-ui/themed';
-import { SearchInput, Trending } from '@/components/index';
+import React, { useState } from 'react';
+import { FlatList, RefreshControl, SafeAreaView } from '@gluestack-ui/themed';
+import { EmptyState, SearchInput, Trending, VideoCard } from '@/components/index';
 import images from '@/constants/images';
+import useAppwrite from '@/lib/useAppwrite';
+import { getAllPosts, getLatestPosts } from '@/lib/appwrite';
+;
 
 
 const index = () => {
+  const { data: posts, refetch } = useAppwrite(getAllPosts);
+  const { data: latestPosts } = useAppwrite(getLatestPosts);
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
   return (
     <SafeAreaView style={styles.container}>
-      <View>
+      <FlatList
+      data={posts}
+      keyExtractor={(item: any) => item.$id}
+      renderItem={({ item }: {item: any}) => (
+        <VideoCard
+          title={item.title}
+          thumbnail={item.thumbnail}
+          video={item.video}
+          creator={item.creator.username}
+          avatar={item.creator.avatar}
+        />
+      )}
+      ListHeaderComponent={() => (
+        <View>
         <View style={styles.header}>
           <View>
             <Text style={styles.welcomeText}>Welcome Back</Text>
@@ -32,10 +58,23 @@ const index = () => {
             Latest Videos
           </Text>
 
-          {/* <Trending posts={[]} /> */}
+          <Trending posts={latestPosts ?? []} />
         </View>
 
       </View>
+      )}
+      ListEmptyComponent={() => (
+        <EmptyState
+          title="No Videos Found"
+          subtitle="No videos created yet"
+        />
+      )}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
+      />
+      
+      
     </SafeAreaView>
 
   )

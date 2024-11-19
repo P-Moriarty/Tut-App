@@ -51,7 +51,7 @@ export default CustomButton;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#secondary-color", // Replace with your color
+    backgroundColor: "#FF8C00",
     borderRadius: 16,
     minHeight: 62,
     flexDirection: "row",

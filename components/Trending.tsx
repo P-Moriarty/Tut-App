@@ -1,6 +1,8 @@
 import React, { useRef, useState } from "react";
 import { ResizeMode, Video } from "expo-av";
 import * as Animatable from "react-native-animatable";
+import { CustomAnimation } from 'react-native-animatable';
+
 import {
   FlatList,
   Image,
@@ -26,28 +28,23 @@ interface TrendingProps {
 }
 
 // Define animations
-const zoomIn = Animatable.createAnimation(
-  {
-    0: {
-      transform: [{ scale: 0.9 }],
-    },
-    1: {
-      transform: [{ scale: 1 }],
-    },
-  }
-) ;
+const zoomIn: CustomAnimation<ViewStyle> = {
+  0: {
+    transform: [{ scale: 0.9 }],
+  },
+  1: {
+    transform: [{ scale: 1 }],
+  },
+};
 
-const zoomOut = Animatable.createAnimation(
-  {
-    0: {
-      transform: [{ scale: 1 }],
-    },
-    1: {
-      transform: [{ scale: 0.9 }],
-    },
-  }
-) ;
-
+const zoomOut: CustomAnimation<ViewStyle> = {
+  0: {
+    transform: [{ scale: 1 }],
+  },
+  1: {
+    transform: [{ scale: 0.9 }],
+  },
+};
 const TrendingItem: React.FC<TrendingItemProps> = ({ activeItem, item }) => {
   const animatableRef = useRef<Animatable.View & View>(null);
   const [play, setPlay] = useState(false);
@@ -58,6 +55,7 @@ const TrendingItem: React.FC<TrendingItemProps> = ({ activeItem, item }) => {
       style={styles.trendingItemContainer}
       ref={animatableRef}
       duration={500}
+      useNativeDriver
     >
       {play ? (
         <Video
@@ -89,7 +87,6 @@ const TrendingItem: React.FC<TrendingItemProps> = ({ activeItem, item }) => {
     </Animatable.View>
   );
 };
-
 const Trending: React.FC<TrendingProps> = ({ posts }) => {
   const [activeItem, setActiveItem] = useState(posts[0].$id);
 

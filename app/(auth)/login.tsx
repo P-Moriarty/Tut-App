@@ -23,7 +23,8 @@ const Login: React.FC = () => {
     };
     const onSubmit = (data: FormData) => {
         console.log(data);
-        router.replace("/explore")
+
+        router.replace("/explore");
     };
     return (
         <SafeAreaView style={styles.container}>
@@ -100,6 +101,7 @@ const Login: React.FC = () => {
                         {errors.password && <Text style={styles.errorText}>{errors.password.message}</Text>}
                     </View>
 
+
                     <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
                         <Text style={styles.buttonText}>Login</Text>
                     </TouchableOpacity>
@@ -119,8 +121,8 @@ const Login: React.FC = () => {
             </KeyboardAwareScrollView>
         </SafeAreaView>
     );
-};
 
+};
 export default Login
 
 const styles = StyleSheet.create({
